@@ -1,128 +1,94 @@
-NGO Management System
-
-A web-based NGO Management System built using Flask to help non-governmental organizations efficiently manage, track, and monitor their projects.
-The system provides a clean dashboard with CRUD operations, search functionality, and date-based filtering for better organization and transparency.
-
+# 🌍 NGO Project Management System
+### Full-Stack Web Application for Efficient Project Tracking & Resource Management
 
 ---
 
-Features
+## 🚀 Overview
 
-User authentication for authorized access
+Managing multiple projects, resources, and activities in NGOs can be complex and inefficient when handled manually.  
+This project presents a **centralized web-based management system** designed to streamline NGO operations, improve visibility, and enhance decision-making.
 
-Add new projects
-
-View project details
-
-Edit and update existing projects
-
-Delete projects
-
-Search projects
-
-Filter projects based on dates
-
-Clean and user-friendly dashboard
-
-
+Built using **Flask and MySQL**, the system enables efficient tracking of projects, resources, and organizational workflows through an interactive dashboard.
 
 ---
 
-Tech Stack
+## 💡 Key Highlights
 
-Backend: Flask (Python)
-
-Frontend: HTML, CSS, Bootstrap
-
-Database: SQLite / MySQL
-
-Template Engine: Jinja2
-
-
+- 📊 Centralized dashboard for monitoring NGO activities  
+- 📁 Efficient project tracking and management  
+- 👥 Resource allocation and tracking  
+- 📈 Improved visibility into project progress  
+- ⚙️ Full-stack implementation using Flask and MySQL  
 
 ---
 
-Project Structure
+## 🎯 Problem Statement
 
-ngo-management-system/
-│
-├── app.py
-├── templates/
-│   ├── login.html
-│   ├── dashboard.html
-│   ├── add_project.html
-│   ├── edit_project.html
-│   └── view_project.html
-│
-├── static/
-│   ├── css/
-│   └── js/
-│
-├── database.db
-├── requirements.txt
-└── README.md
+NGOs often face challenges such as:
 
+- Lack of centralized systems for managing projects  
+- Difficulty in tracking progress and resources  
+- Inefficient communication and reporting  
+- Manual processes leading to errors and delays  
 
 ---
 
-Installation and Setup
+## 💡 Solution
 
-1. Clone the repository
+This system provides a **centralized platform** to:
 
-git clone https://github.com/your-username/ngo-management-system.git
+- Manage and track multiple NGO projects  
+- Monitor resource allocation  
+- Provide real-time insights through dashboards  
+- Improve operational efficiency  
+
+---
+
+## 🧠 System Architecture
+
+---
+
+## 🖼️ Application Preview
+
+*(Add screenshots here — very important)*
+
+### 🔹 Dashboard
+- Overview of all ongoing projects  
+- Key metrics and summaries  
+
+### 🔹 Project Management
+- Create and manage NGO projects  
+- Track project status and updates  
+
+### 🔹 Resource Tracking
+- Monitor allocation of resources  
+- Improve utilization and planning  
+
+---
+
+## 🚀 Features
+
+- 📊 Dashboard for real-time monitoring  
+- 📁 Project creation and tracking  
+- 👥 Resource management system  
+- 🔐 Structured backend with database integration  
+- 📈 Data-driven insights for decision-making  
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend:** HTML, CSS, JavaScript  
+- **Backend:** Flask (Python)  
+- **Database:** MySQL  
+- **Tools:** Git  
+
+---
+
+## ⚙️ Installation & Setup
+
+```bash
+git clone https://github.com/Janicebenita/ngo-management-system.git
 cd ngo-management-system
-
-
-2. Create a virtual environment
-
-python -m venv venv
-source venv/bin/activate   # Windows: venv\Scripts\activate
-
-
-3. Install dependencies
-
 pip install -r requirements.txt
-
-
-4. Run the application
-
 python app.py
-
-
-5. Open the browser and navigate to
-
-http://127.0.0.1:5000/
-
-
-
-
----
-
-Use Cases
-
-NGOs managing multiple social projects
-
-Tracking project timelines and progress
-
-Monitoring ongoing and completed initiatives
-
-Improving transparency and project organization
-
-
-
----
-
-Future Enhancements
-
-Role-based access control (Admin, Staff, Volunteers)
-
-Report generation in PDF or Excel format
-
-Donation and fund tracking
-
-Email notifications
-
-Cloud database integration
-
-
-
