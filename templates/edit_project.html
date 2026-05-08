@@ -1,86 +1,372 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Edit Project</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, Helvetica, sans-serif;
+        }
+
+        body{
+            background: linear-gradient(135deg,#0f172a,#1e3a8a,#2563eb);
+            min-height:100vh;
+            padding:40px;
+        }
+
+        .container{
+            max-width:1200px;
+            margin:auto;
+        }
+
+        .title{
+            text-align:center;
+            color:white;
+            font-size:40px;
+            margin-bottom:30px;
+            font-weight:bold;
+        }
+
+        .card{
+            background:rgba(255,255,255,0.12);
+            backdrop-filter:blur(10px);
+            border-radius:20px;
+            padding:30px;
+            margin-bottom:25px;
+            box-shadow:0 8px 30px rgba(0,0,0,0.2);
+            border:1px solid rgba(255,255,255,0.2);
+        }
+
+        .section-title{
+            color:#fff;
+            margin-bottom:20px;
+            font-size:24px;
+            border-left:5px solid #38bdf8;
+            padding-left:10px;
+        }
+
+        .grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+            gap:20px;
+        }
+
+        .form-group{
+            display:flex;
+            flex-direction:column;
+        }
+
+        label{
+            color:#fff;
+            margin-bottom:8px;
+            font-weight:bold;
+        }
+
+        input, select, textarea{
+            padding:12px;
+            border:none;
+            border-radius:10px;
+            background:rgba(255,255,255,0.9);
+            font-size:15px;
+        }
+
+        input:focus, select:focus, textarea:focus{
+            outline:none;
+            box-shadow:0 0 10px #38bdf8;
+        }
+
+        .btn-group{
+            display:flex;
+            justify-content:center;
+            gap:20px;
+            margin-top:30px;
+            flex-wrap:wrap;
+        }
+
+        .btn{
+            padding:14px 35px;
+            border:none;
+            border-radius:12px;
+            font-size:16px;
+            font-weight:bold;
+            cursor:pointer;
+        }
+
+        .update-btn{
+            background:#10b981;
+            color:white;
+        }
+
+        .delete-btn{
+            background:#ef4444;
+            color:white;
+        }
+
+        .back-btn{
+            background:#3b82f6;
+            color:white;
+        }
+
+        .update-btn:hover{ background:#059669; }
+        .delete-btn:hover{ background:#dc2626; }
+        .back-btn:hover{ background:#2563eb; }
+
+        @media(max-width:768px){
+            .title{ font-size:28px; }
+        }
+
+        /* ================= MODAL ================= */
+
+        .modal{
+            position:fixed;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            background:rgba(0,0,0,0.6);
+            display:none;
+            justify-content:center;
+            align-items:center;
+            z-index:9999;
+        }
+
+        .modal-box{
+            background:white;
+            padding:25px;
+            border-radius:12px;
+            width:350px;
+            text-align:center;
+            animation:pop 0.2s ease;
+        }
+
+        @keyframes pop{
+            from{transform:scale(0.8);opacity:0;}
+            to{transform:scale(1);opacity:1;}
+        }
+
+        .modal-box h3{
+            margin-bottom:10px;
+        }
+
+        .modal-box p{
+            margin-bottom:20px;
+            color:#555;
+        }
+
+        .modal-buttons{
+            display:flex;
+            gap:10px;
+        }
+
+        .modal-buttons button{
+            flex:1;
+            padding:10px;
+            border:none;
+            border-radius:8px;
+            cursor:pointer;
+            font-weight:bold;
+        }
+
+        .confirm{
+            background:#10b981;
+            color:white;
+        }
+
+        .cancel{
+            background:#e5e7eb;
+        }
+
+        /* 🔥 ADDED: prevent background scroll when modal open */
+        body.modal-open{
+            overflow:hidden;
+        }
+
+    </style>
 </head>
+
 <body>
-    <h2>Edit Project</h2>
 
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <ul class="flash">
-          {% for message in messages %}
-            <li>{{ message }}</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
+<div class="container">
 
-    <form method="post" class="card">
-        <input type="hidden" name="id" value="{{ project.id }}">
+    <h1 class="title">Edit Project</h1>
 
-        <h3>Basic Info</h3>
-        <input name="erp_code" placeholder="ERP Code" value="{{ project.erp_code }}" required>
-        <input name="project_name" placeholder="Project Name" value="{{ project.project_name }}" required>
-        <input name="project_initiated_year" placeholder="Project Year" value="{{ project.project_initiated_year }}" required>
-        <input name="thematic" placeholder="Thematic" value="{{ project.thematic }}" required>
-        <input name="ro" placeholder="RO" value="{{ project.ro }}">
+    <form method="POST" id="editForm">
 
-        <h3>MOU & Status</h3>
-        <input type="date" name="mou_start_date" value="{{ project.mou_start_date }}">
-        <input type="date" name="mou_end_date" value="{{ project.mou_end_date }}">
-        <select name="status" required>
-            <option value="">--Select Status--</option>
-            <option value="New" {% if project.status == "New" %}selected{% endif %}>New</option>
-            <option value="Ongoing" {% if project.status == "Ongoing" %}selected{% endif %}>Ongoing</option>
-            <option value="Closed" {% if project.status == "Closed" %}selected{% endif %}>Closed</option>
-        </select>
+        <!-- BASIC INFO -->
+        <div class="card">
+            <h2 class="section-title">Basic Info</h2>
 
-        <h3>Location Info</h3>
-        <input name="state" placeholder="State" value="{{ project.state }}">
-        <input name="districts" placeholder="Districts" value="{{ project.districts }}">
-        <input name="block" placeholder="Block" value="{{ project.block }}">
-        <input name="location" placeholder="Location" value="{{ project.location }}">
-        <input name="rural_urban" placeholder="Rural/Urban" value="{{ project.rural_urban }}">
+            <div class="grid">
+                <div class="form-group">
+                    <label>ERP Code</label>
+                    <input name="erp_code" value="{{ project.erp_code }}">
+                </div>
 
-        <h3>Beneficiaries</h3>
-<label>Total RO</label>
-<input name="total_ro" placeholder="Total RO" value="{{ project.total_ro }}">
-<label>Adult Men</label>
-<input name="adult_men" placeholder="Adult Men" value="{{ project.adult_men }}">
-<label>Adult Women</label>
-<input name="adult_women" placeholder="Adult Women" value="{{ project.adult_women }}">
-<label>Total Adults</label>
-<input name="total_adult" placeholder="Total Adults" value="{{ project.total_adult }}">
+                <div class="form-group">
+                    <label>Project Name</label>
+                    <input name="project_name" value="{{ project.project_name }}">
+                </div>
 
-<h3>Children 0-6</h3>
-<label>Boys 0-6</label>
-<input name="boys_0_6" placeholder="Boys 0-6" value="{{ project.boys_0_6 }}">
-<label>Girls 0-6</label>
-<input name="girls_0_6" placeholder="Girls 0-6" value="{{ project.girls_0_6 }}">
-<label>Total Children 0-6</label>
-<input name="total_children_0_6" placeholder="Total Children 0-6" value="{{ project.total_children_0_6 }}">
+                <div class="form-group">
+                    <label>Year</label>
+                    <input name="project_initiated_year" value="{{ project.project_initiated_year }}">
+                </div>
 
-<h3>Children 7+</h3>
-<label>Boys 7+</label>
-<input name="boys_7_plus" placeholder="Boys 7+" value="{{ project.boys_7_plus }}">
-<label>Girls 7+</label>
-<input name="girls_7_plus" placeholder="Girls 7+" value="{{ project.girls_7_plus }}">
-<label>Total Children 7+</label>
-<input name="total_children_7_plus" placeholder="Total Children 7+" value="{{ project.total_children_7_plus }}">
+                <div class="form-group">
+                    <label>Thematic</label>
+                    <input name="thematic" value="{{ project.thematic }}">
+                </div>
 
-<h3>Youth</h3>
-<label>Youth Boys</label>
-<input name="youth_boys" placeholder="Youth Boys" value="{{ project.youth_boys }}">
-<label>Youth Girls</label>
-<input name="youth_girls" placeholder="Youth Girls" value="{{ project.youth_girls }}">
-<label>Total Youths</label>
-<input name="total_youths" placeholder="Total Youths" value="{{ project.total_youths }}">
+                <div class="form-group">
+                    <label>RO</label>
+                    <input name="ro" value="{{ project.ro }}">
+                </div>
+            </div>
+        </div>
 
+        <!-- MOU -->
+        <div class="card">
+            <h2 class="section-title">MOU & Status</h2>
 
-        <button type="submit">Update Project</button>
-        <a href="{{ url_for('delete_project', id=project.id) }}" onclick="return confirm('Are you sure you want to delete?')">Delete Project</a>
+            <div class="grid">
+                <input type="date" name="mou_start_date" value="{{ project.mou_start_date }}">
+                <input type="date" name="mou_end_date" value="{{ project.mou_end_date }}">
+
+                <select name="status">
+                    <option>New</option>
+                    <option>Ongoing</option>
+                    <option>Closed</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- LOCATION -->
+        <div class="card">
+            <h2 class="section-title">Location Info</h2>
+
+            <div class="grid">
+                <input name="state" value="{{ project.state }}">
+                <input name="districts" value="{{ project.districts }}">
+                <input name="block" value="{{ project.block }}">
+                <input name="location" value="{{ project.location }}">
+                <input name="rural_urban" value="{{ project.rural_urban }}">
+            </div>
+        </div>
+
+        <!-- BENEFICIARIES -->
+        <div class="card">
+            <h2 class="section-title">Beneficiaries</h2>
+
+            <div class="grid">
+                <input name="total_ro" value="{{ project.total_ro }}">
+                <input name="adult_men" value="{{ project.adult_men }}">
+                <input name="adult_women" value="{{ project.adult_women }}">
+                <input name="total_adults" value="{{ project.total_adults }}">
+            </div>
+        </div>
+
+        <!-- CHILDREN -->
+        <div class="card">
+            <h2 class="section-title">Children</h2>
+
+            <div class="grid">
+                <input name="boys_0_6" value="{{ project.boys_0_6 }}">
+                <input name="girls_0_6" value="{{ project.girls_0_6 }}">
+                <input name="total_children_0_6" value="{{ project.total_children_0_6 }}">
+
+                <input name="boys_7_plus" value="{{ project.boys_7_plus }}">
+                <input name="girls_7_plus" value="{{ project.girls_7_plus }}">
+                <input name="total_children_7_plus" value="{{ project.total_children_7_plus }}">
+            </div>
+        </div>
+
+        <!-- YOUTH -->
+        <div class="card">
+            <h2 class="section-title">Youth</h2>
+
+            <div class="grid">
+                <input name="youth_boys" value="{{ project.youth_boys }}">
+                <input name="youth_girls" value="{{ project.youth_girls }}">
+                <input name="total_youths" value="{{ project.total_youths }}">
+            </div>
+        </div>
+
+        <!-- BUTTONS -->
+        <div class="btn-group">
+
+            <button type="button" class="btn update-btn" onclick="openModal('update')">
+                Update Project
+            </button>
+
+            <button type="button" class="btn delete-btn" onclick="openModal('delete')">
+                Delete Project
+            </button>
+
+            <a href="/projects">
+                <button type="button" class="btn back-btn">Back</button>
+            </a>
+
+        </div>
+
     </form>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal" onclick="outsideClick(event)">
+    <div class="modal-box">
+        <h3>Confirm Action</h3>
+        <p id="msg">Are you sure?</p>
+
+        <div class="modal-buttons">
+            <button class="cancel" onclick="closeModal()">Cancel</button>
+            <button class="confirm" id="confirmBtn">Confirm</button>
+        </div>
+    </div>
+</div>
+
+<script>
+let action="";
+
+function openModal(type){
+    action=type;
+    document.getElementById("modal").style.display="flex";
+
+    document.body.classList.add("modal-open");
+
+    document.getElementById("msg").innerText =
+        type==="update" ?
+        "Do you want to update this project?" :
+        "Do you want to delete this project?";
+}
+
+function closeModal(){
+    document.getElementById("modal").style.display="none";
+    document.body.classList.remove("modal-open");
+}
+
+function outsideClick(e){
+    if(e.target.id === "modal"){
+        closeModal();
+    }
+}
+
+document.getElementById("confirmBtn").onclick=function(){
+
+    if(action==="update"){
+        document.getElementById("editForm").submit();
+    }
+
+    if(action==="delete"){
+        window.location.href="/delete_project/{{ project.id }}";
+    }
+};
+</script>
+
 </body>
 </html>
