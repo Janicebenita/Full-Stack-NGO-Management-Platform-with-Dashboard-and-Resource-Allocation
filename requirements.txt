@@ -1,6 +1,6 @@
-Flask
-mysql-connector-python
+flask
 gunicorn
+psycopg2-binary
 pandas
-openpyxl
-fpdf
+xlsxwriter
+reportlab
