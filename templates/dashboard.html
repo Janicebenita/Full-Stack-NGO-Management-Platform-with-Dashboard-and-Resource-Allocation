@@ -87,6 +87,29 @@
             color: #007bff;
             font-size: 14px;
         }
+
+        /* ✅ ADDED BUTTON SECTION ONLY */
+        .export-buttons {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .export-buttons a {
+            text-decoration: none;
+            padding: 12px 18px;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+        }
+
+        .excel-btn {
+            background: #27ae60;
+        }
+
+        .pdf-btn {
+            background: #e74c3c;
+        }
     </style>
 </head>
 
@@ -130,6 +153,11 @@
                 <a href="{{ url_for('search') }}?status=Closed">View</a>
             </div>
 
+        </div>
+
+        <!-- ✅ ADDED EXPORT BUTTONS ONLY -->
+        <div class="export-buttons">
+            <a href="{{ url_for('export_excel') }}" class="excel-btn">📊 Export Excel</a>
         </div>
 
     </div>
