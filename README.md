@@ -105,3 +105,10 @@ If you found this project useful or interesting:
 - 💡 Contributions, suggestions, and feedback are always welcome!
 
 ---
+
+
+## 📬 Connect With Me
+
+- LinkedIn: https://linkedin.com/in/janice13
+- GitHub: https://github.com/Janicebenita
+- Email: janicebenita123@gmail.com
