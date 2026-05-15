@@ -92,3 +92,14 @@ git clone https://github.com/Janicebenita/ngo-management-system.git
 cd ngo-management-system
 pip install -r requirements.txt
 python app.py
+
+
+# ⭐ If You Like This Project
+
+If you found this project useful or interesting:
+
+⭐ Give it a star on GitHub  
+🍴 Feel free to fork the repository  
+💡 Contributions, suggestions, and feedback are always welcome!
+
+---
