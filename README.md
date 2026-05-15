@@ -92,7 +92,7 @@ git clone https://github.com/Janicebenita/ngo-management-system.git
 cd ngo-management-system
 pip install -r requirements.txt
 python app.py
-
+---
 
 # ⭐ If You Like This Project
 
