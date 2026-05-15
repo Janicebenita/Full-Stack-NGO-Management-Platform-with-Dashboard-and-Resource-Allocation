@@ -100,8 +100,8 @@ python app.py
 
 If you found this project useful or interesting:
 
-⭐ Give it a star on GitHub  
-🍴 Feel free to fork the repository  
-💡 Contributions, suggestions, and feedback are always welcome!
+- ⭐ Give it a star on GitHub
+- 🍴 Feel free to fork the repository
+- 💡 Contributions, suggestions, and feedback are always welcome!
 
 ---
