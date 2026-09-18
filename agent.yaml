@@ -1,0 +1,6 @@
+spec_version: "0.1.0"
+name: ngo-project-review-assistant
+version: "0.1.0"
+description: >-
+  Helps authorized NGO staff review project records, timelines, and resource
+  information, then drafts evidence-based follow-up priorities for human review.
